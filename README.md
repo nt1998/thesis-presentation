@@ -7,30 +7,37 @@
 
 </td></tr></table>
 
-This repository contains a template for presentations at the IVC institute using the [Reveal JS](https://revealjs.com/) framework, which is a web-based alternative to presentation slides.
-The benefit of having a web-based presentation is the cross plattform compatibility.
-While this is already possible with a simple PDF, Reveal JS can easily handle videos and it is more elegant to host the presentation on a domain and thus simply share a link instead of a 100 MB presentation file.
-A live demo can be accessed [here](https://presentations.rakuschek.at/template/).
+---
 
+This repository contains a template for presentations at the IVC Institute using the [Reveal JS](https://revealjs.com/) framework, a web-based alternative to traditional presentation slides.  
 
-**Attention** Basic HTML and CSS knowledge is required to work with this template and framework.
+The advantage of a web-based presentation is its cross-platform compatibility. While this is already possible with a simple PDF, Reveal JS allows for seamless video integration and provides a more elegant way to host presentations online. Instead of sharing a bulky 100 MB presentation file, you can simply share a link.  
 
-### Usage
+A live demo is available [here](https://presentations.rakuschek.at/template/).  
 
-To view the presentation, open the index.html file with any browser of your choice (please don't use browsers from the stone age era, e.g. Internet Explorer).
+**Note:** Basic HTML and CSS knowledge is required to work with this template and framework.  
 
-Presentations made with [Reveal JS](https://revealjs.com/) are merely a website.
-Thus, editing the presentation is done by writing raw HTML code.
-To keep this Readme concise, please refer to the [Reveal JS](https://revealjs.com/) documentation for further information.
+---
 
-Important: This template uses [Tailwind CSS](https://tailwindcss.com/) as a CSS framework.
-The benefit of Tailwind is that it alleviates one of the hardest things in programming: Naming things.
-More concisely, Tailwind provides each CSS attribute as a class of its own, such that no more classes have to be named and defined.
-Tailwind is a matter of taste, so use whatever CSS framework best fits your needs.
+### Usage  
 
-### Exporting to PDF
+To view the presentation, open the `index.html` file in any modern browser (please avoid outdated browsers such as Internet Explorer).  
 
-Reveal JS presentations can be saved as a PDF file by using the browsers PDF printing feature.
-Simply append `?print-pdf` to the end of the URL and reload the page.
-This creates a view that can be directly saved to a PDF file.
-Unfortunately Firefox does not work well for this task, therefore it is advisable to use Chrome or Opera for saving the PDF.
+Presentations created with [Reveal JS](https://revealjs.com/) function as standalone websites.  
+Therefore, editing the presentation involves writing raw HTML code. To keep this README concise, please refer to the [Reveal JS](https://revealjs.com/) documentation for further details.  
+
+**Important:** This template uses [Tailwind CSS](https://tailwindcss.com/) as its CSS framework.  
+Tailwind simplifies one of the most challenging aspects of programming: naming things. More specifically, Tailwind provides utility classes for each CSS property, eliminating the need to define and name custom classes. However, Tailwind is a matter of taste, therefore feel free to use whichever CSS framework best suits your needs.  
+
+---
+
+### Exporting to PDF  
+
+Reveal JS presentations can be saved as PDF files using the browser's built-in print-to-PDF feature.  
+Simply append `?print-pdf` to the end of the URL and reload the page. This will generate a print-friendly version that can be saved as a PDF file.  
+
+**Note:** Firefox does not handle this feature well, so it is recommended to use Chrome or Opera for better results.  
+
+---
+
+Template created by [Julian Rakuschek](https://julian.rakuschek.at)
