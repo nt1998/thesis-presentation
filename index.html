@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="robots" content="noindex">
+    <title>IVC Presentation</title>
+    <link rel="stylesheet" href="./lib/revealjs/reset.css">
+    <link rel="stylesheet" href="./lib/revealjs/reveal.css">
+    <link rel="stylesheet" href="./lib/revealjs/theme/white.css">
+    <!-- Theme used for syntax highlighted code -->
+    <link rel="stylesheet" href="./lib/plugin/highlight/monokai.css">
+    <script src="./lib/tailwind.js"></script>
+    <script src="./lib/plugin/simplemenu/simplemenu.js"></script>
+</head>
+<body>
+<div class="reveal">
+    <div class="slides">
+        <section>
+            <h3>How to read these slides?</h3>
+            <div class="grid grid-cols-3 place-items-start gap-4">
+                <div class="flex flex-row place-self-end">
+                    <img src="./media/images/template/keyboard-arrow-left.png" class="h-[50px]"/>
+                    <img src="./media/images/template/keyboard-arrow-right.png" class="h-[50px]"/>
+                </div>
+                <span class="col-span-2">Navigate via arrow keys between slides</span>
+                <img src="./media/images/template/keyboard-o.png" class="h-[50px]  place-self-end"/>
+                <span class="col-span-2">Overview</span>
+            </div>
+            <p>Click on the menu bar items to navigate to chapters</p>
+        </section>
+        <section data-background-image="./media/images/template/16b_tug_building.png" data-background-size="cover"
+                 data-transition="fade" data-state="hide-menubar hide-menu">
+            <div class="justify-between w-full flex flex-row">
+                <div class="h-[120px] pt-8">
+                    <img src="./media/images/template/ivc_logo.png"/>
+                </div>
+                <div class="flex flex-col items-end">
+                    <div class="h-[120px]">
+                        <img src="./media/images/template/tug.svg"/>
+                    </div>
+                    <span class="text-gray-700 text-[30px] tracking-widest">SCIENCE</span>
+                    <span class="text-gray-700 text-[30px] tracking-widest">PASSION</span>
+                    <span class="text-gray-700 text-[30px] tracking-widest">TECHNOLOGY</span>
+                </div>
+            </div>
+
+            <p class="text-purple-900 text-left text-[100px] font-semibold">IVC Template</p>
+            <p class="text-left text-[30px] font-semibold">Julian Rakuschek</p>
+            <p class="text-left text-[30px]">31.10.2024</p>
+        </section>
+        <section class="center" data-background-color="#4a148c" data-state="hide-menubar hide-menu">
+            <h1>Motivation</h1>
+        </section>
+        <section data-name="Motivation">
+            <h3>Formulate your problem</h3>
+            <div class="grid place-items-center">
+                <img src="./media/images/undraw_questions_g2px.svg" class="h-80"/>
+            </div>
+        </section>
+        <section data-name="Introduction">
+            <h3>Background for the audience</h3>
+            <p>Step by step using fragments</p>
+            <ol>
+                <li class="fragment">Step 1</li>
+                <li class="fragment">Step 2</li>
+                <li class="fragment">Step 3</li>
+            </ol>
+        </section>
+        <section class="pt-10">
+            <p>LaTeX math environments can be embedded</p>
+            <div class="w-full flex flex-col">
+                <div class="bg-purple-900 text-white p-2">
+                    Ordinary Least Squares
+                </div>
+                <div class="bg-purple-200 p-2">
+                    $$ \mathbf{\hat{\beta}} = (\mathbf{X}^T \mathbf{X})^{-1} \mathbf{X}^T \mathbf{y} $$
+                </div>
+            </div>
+        </section>
+        <section class="center" data-background-color="#4a148c" data-state="hide-menubar hide-menu">
+            <h1>Demo</h1>
+        </section>
+        <section data-name="Demo">
+            <h3>Demo</h3>
+            <div class="flex flex-row justify-center items-center">
+                <video src="./media/videos/demo.mp4" autoplay muted loop controls class="h-96"></video>
+            </div>
+
+            <p class="text-[20px]">Source: <a href="https://www.pexels.com/video/video-of-black-cat-855401/">https://www.pexels.com/video/video-of-black-cat-855401/</a>
+            </p>
+        </section>
+        <section class="center" data-background-color="#4a148c" data-state="hide-menubar hide-menu">
+            <h1>Questions?</h1>
+        </section>
+    </div>
+</div>
+
+<script src="./lib/revealjs/reveal.js"></script>
+<script src="./lib/plugin/notes/notes.js"></script>
+<script src="./lib/plugin/markdown/markdown.js"></script>
+<script src="./lib/plugin/highlight/highlight.js"></script>
+<script src="./lib/plugin/math/math.js"></script>
+<script>
+    // More info about initialization & config:
+    // - https://revealjs.com/initialization/
+    // - https://revealjs.com/config/
+    Reveal.initialize({
+        simplemenu: {
+            flat: true,
+            inherit: "previous",
+            barhtml: {
+                header: "<div class='menubar'><div class='slide-number'></div><ul class='menu'></ul></div>",
+                footer: "<div class='menubar p-3 items-center'><div>Julian Rakuschek <br /> <span class='text-[20px]'>30.11.2024</span></div><div><img src='./media/images/template/ivc_logo.png' class='h-12' /></div></div>"
+            }
+        },
+        hash: false,
+        history: false,
+        slideNumber: true,
+        controls: false,
+        progress: true,
+        mouseWheel: true,
+        disableLayout: false,
+        pdfSeparateFragments: false,
+        touch: true,
+        controlsTutorial: true,
+        // Learn about plugins: https://revealjs.com/plugins/
+        plugins: [RevealMarkdown, RevealHighlight, RevealNotes, RevealMath.KaTeX, Simplemenu],
+        width: 1600,
+        height: 900,
+        center: false
+    });
+
+</script>
+</body>
+</html>
