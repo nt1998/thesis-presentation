@@ -1,0 +1,281 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>ICARUS Defense — Speaker Cue Sheet</title>
+<style>
+  :root { --ink:#1a1a1a; --accent:#4a148c; --muted:#666; }
+  * { box-sizing: border-box; }
+  body {
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    color: var(--ink);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 24px;
+    line-height: 1.4;
+    font-size: 16px;
+  }
+  h1 { font-size: 24px; color: var(--accent); margin: 0 0 4px; }
+  .sub { color: var(--muted); font-size: 14px; margin: 0 0 20px; }
+  .slide {
+    border-top: 2px solid #ddd;
+    padding: 12px 0;
+    page-break-inside: avoid;
+  }
+  .slide .num {
+    display: inline-block;
+    background: var(--accent);
+    color: #fff;
+    font-weight: 700;
+    border-radius: 4px;
+    padding: 1px 9px;
+    font-size: 15px;
+    margin-right: 8px;
+  }
+  .head { font-weight: 700; font-size: 17px; }
+  .cues { margin: 6px 0 0; padding-left: 0; list-style: none; }
+  .cues li { margin: 3px 0; }
+  .kw { font-weight: 700; }
+  .time { float: right; color: var(--accent); font-weight: 700; font-size: 15px; }
+  .pause { background: #ffe082; font-weight: 700; padding: 0 4px; border-radius: 3px; }
+  .cut { background: #ffcdd2; padding: 0 4px; border-radius: 3px; font-size: 14px; }
+  .verbatim {
+    background: #ede7f6;
+    border-left: 4px solid var(--accent);
+    padding: 8px 10px;
+    margin: 6px 0;
+    font-size: 15px;
+  }
+  .verbatim b { color: var(--accent); }
+  .demo { background:#e1f5fe; padding:0 4px; border-radius:3px; }
+  .section-break { page-break-before: always; }
+  .qa h2 { color: var(--accent); font-size: 20px; margin-top: 24px; }
+  .qa .item { margin: 10px 0; page-break-inside: avoid; }
+  .qa .q { font-weight: 700; }
+  .qa .a { color: #333; }
+  .routine { background:#f1f8e9; border:1px solid #c5e1a5; padding:10px; border-radius:5px; font-size:15px; }
+  @media print {
+    body { padding: 0; font-size: 13.5px; max-width: 100%; }
+    .slide .num { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .pause, .cut, .verbatim, .demo, .routine { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    a { color: var(--ink); text-decoration: none; }
+  }
+</style>
+</head>
+<body>
+
+<h1>ICARUS — Master's Defense · Speaker Cue Sheet</h1>
+<p class="sub">Read the cue, then look up and talk. ~20–22 min · talk cap 25 · timer reset at slide 1. <span class="pause">PAUSE</span> = stop &amp; breathe · <span class="cut">CUT IF LATE</span> · ⏱ = target clock.</p>
+
+<!-- ===================== TALK ===================== -->
+
+<div class="slide">
+  <span class="time">⏱ 0:00</span>
+  <span class="num">1</span><span class="head">Title</span>
+  <div class="verbatim"><b>SAY VERBATIM:</b> "Good morning. My thesis is a design study on visual analytics for EEG artefact removal — I built a tool called ICARUS, with EEG experts here at TU&nbsp;Graz."</div>
+  <ul class="cues">
+    <li>[reset speaker timer NOW] · [look up, breathe]</li>
+  </ul>
+</div>
+
+<div class="slide">
+  <span class="time">⏱ ~1:00</span>
+  <span class="num">2</span><span class="head">One eye-blink buries a second of brain signal.</span>
+  <ul class="cues">
+    <li><span class="kw">Claim:</span> non-neural artefacts dominate &amp; must go before any analysis.</li>
+    <li>say: blinks, muscle, line noise — bigger than the brain itself.</li>
+    <li>[point at blinks → look up] → next: how to remove them?</li>
+  </ul>
+</div>
+
+<div class="slide">
+  <span class="time">⏱ ~2:30</span>
+  <span class="num">3</span><span class="head">Cleanup = expert hand-judging every ICA component, hundreds per study.</span>
+  <ul class="cues">
+    <li><span class="kw">Claim:</span> the review is the bottleneck — manual, per-component, no record of why.</li>
+    <li>in → "how is this done today?" · 100s participants × ~16 comps.</li>
+    <li>existing tools show pieces, none combine linked views + overview + ML.</li>
+    <li>→ next: that gap = my two RQs.</li>
+  </ul>
+</div>
+
+<div class="slide">
+  <span class="time">⏱ ~3:30</span>
+  <span class="num">4</span><span class="head">Two research questions.</span>
+  <ul class="cues">
+    <li><span class="kw">Claim:</span> the contract — everything answers RQ1 (views) &amp; RQ2 (ML + control).</li>
+    <li>read both RQs slowly. <span class="pause">PAUSE</span></li>
+    <li>→ next: minimum background to read the tool.</li>
+  </ul>
+</div>
+
+<div class="slide">
+  <span class="time">⏱ ~4:30</span>
+  <span class="num">5</span><span class="head">Expert reads three things: scalp map, spectrum, time course.</span>
+  <ul class="cues">
+    <li><span class="kw">Claim:</span> 3 signatures = the vocabulary; the tool is built around them.</li>
+    <li>topomap (frontal=eye / peripheral=muscle / dipolar=brain) → PSD (1/f=brain / flat=muscle / delta=eye) → timeline.</li>
+    <li>[look up between the three] → next: ICARUS puts all three in one place.</li>
+  </ul>
+</div>
+
+<div class="slide">
+  <span class="time">⏱ ~5:00</span>
+  <span class="num">6</span><span class="head">DIVIDER — ICARUS: one linked workspace.</span>
+  <ul class="cues">
+    <li>say: "built with the experts, following the nine-stage design study methodology."</li>
+    <li>name what's coming: inspector · recommender · cross-participant overview · export.</li>
+  </ul>
+</div>
+
+<div class="slide">
+  <span class="time">⏱ ~6:30</span>
+  <span class="num">7</span><span class="head">⭐ Three views update together as you switch components.</span>
+  <ul class="cues">
+    <li><span class="kw">Claim (core contribution):</span> coordinated linked views.</li>
+    <li><span class="demo">[DEMO LOOP plays — narrate, don't read]</span></li>
+    <li>quote: <em>"the entire visualisation on one screen."</em></li>
+    <li>[look at committee, NOT screen] → next: where does ML come in?</li>
+  </ul>
+</div>
+
+<div class="slide">
+  <span class="time">⏱ ~8:00</span>
+  <span class="num">8</span><span class="head">Confidence recommender triages easy cases.</span>
+  <ul class="cues">
+    <li><span class="kw">Claim:</span> answers RQ2 — ML cuts workload, expert keeps control.</li>
+    <li>say: <span class="kw">~40%</span> land in the auto-tier (Tier 1).</li>
+    <li>key choice: indicator only — checkmark NOT pre-set (expert asked).</li>
+    <li>→ next: comparing across participants.</li>
+  </ul>
+</div>
+
+<div class="slide">
+  <span class="time">⏱ ~9:30</span>
+  <span class="num">9</span><span class="head">Cross-participant projection — every component in one space.</span>
+  <ul class="cues">
+    <li><span class="kw">Claim:</span> the thing the script workflow lacks — sets up the key result.</li>
+    <li>say: lone green dot in a red cluster = flag worth re-checking.</li>
+    <li>[foreshadow: "remember this — it pays off in the eval"] → next: getting decisions out.</li>
+  </ul>
+</div>
+
+<div class="slide">
+  <span class="time">⏱ ~10:30</span>
+  <span class="num">10</span><span class="head">Decisions export as labels back into the MNE pipeline.</span>
+  <ul class="cues">
+    <li><span class="kw">Claim:</span> closes the loop — reproducible, no transcription errors, model improves.</li>
+    <li>YAML → <code>ica.exclude</code> → <code>ica.apply()</code>; accumulated labels retrain.</li>
+    <li>quote: <em>"I push my data up and get it back with my labels."</em></li>
+    <li>→ next: how the recommender works.</li>
+  </ul>
+</div>
+
+<div class="slide">
+  <span class="time">⏱ ~12:00</span>
+  <span class="num">11</span><span class="head">Recommender: MiniRocket + topography → Random Forest → keep-prob.</span>
+  <ul class="cues">
+    <li><span class="kw">Claim:</span> fast features → calibrated keep-probability driving the tiers.</li>
+    <li>ONE breath. honest: muscle hard, ocular very reliable. ~75–79%.</li>
+    <li>[why MiniRocket / why own classifier → <span class="kw">BACKUP B1, B2</span>]</li>
+    <li><span class="cut">CUT IF &gt;13:30 — one sentence, move on</span> → next: did it work for experts?</li>
+  </ul>
+</div>
+
+<div class="slide">
+  <span class="time">⏱ ~12:30</span>
+  <span class="num">12</span><span class="head">DIVIDER — Evaluated with two domain experts on their own data.</span>
+  <ul class="cues">
+    <li>say: real data, real task, think-aloud captured reasoning live.</li>
+    <li>frame: qualitative — the deploy stage of the design study.</li>
+  </ul>
+</div>
+
+<div class="slide">
+  <span class="time">⏱ ~14:00</span>
+  <span class="num">13</span><span class="head">Layout matched how experts reason — topomap &amp; PSD first.</span>
+  <ul class="cues">
+    <li><span class="kw">Claim:</span> RQ1 answered by evidence — views match the real decision order.</li>
+    <li>sequence: index → topomap → PSD → timeline → decide (~5s clear cases).</li>
+    <li>[deliver quote slowly, look up] → next: the result that matters most.</li>
+  </ul>
+</div>
+
+<div class="slide">
+  <span class="time">⏱ ~15:30</span>
+  <span class="num">14</span><span class="head">⭐ The overview caught a misclassification the classifier got wrong.</span>
+  <div class="verbatim"><b>THE ONE BIG MESSAGE.</b> <span class="pause">PAUSE</span> first. Then: "during the session, the overview surfaced a component the model and the original review both got wrong." Land it: <b>imperfect model + human review &gt; either alone.</b></div>
+  <ul class="cues">
+    <li>[slowest, most deliberate moment — eye contact] → next: the study corrected the tool too.</li>
+  </ul>
+</div>
+
+<div class="slide">
+  <span class="time">⏱ ~16:30</span>
+  <span class="num">15</span><span class="head">Expert feedback reshaped the tool — the design study working.</span>
+  <ul class="cues">
+    <li><span class="kw">Claim:</span> real use corrected choices requirements alone missed.</li>
+    <li>say: experts classify by spectral slope, not band values → bars had to go.</li>
+    <li>also: mapper demoted, topomap enlarged, recs not pre-set.</li>
+    <li><span class="cut">CUT IF &gt;17:00 — keep only the PSD example</span> → next: what it adds up to.</li>
+  </ul>
+</div>
+
+<div class="slide">
+  <span class="time">⏱ ~18:00</span>
+  <span class="num">16</span><span class="head">Contribution — value is the combination.</span>
+  <div class="verbatim"><b>SAY VERBATIM (closing):</b> "To sum up — none of these blocks is novel on its own. The contribution is that together they keep the expert in control while catching errors a classifier alone would miss. Thank you, I'm happy to take your questions."</div>
+  <ul class="cues">
+    <li><span class="pause">PAUSE</span> before "Thank you". End HERE — no future-work tail.</li>
+    <li>[switch to Q&amp;A — flip to the sheet below]</li>
+  </ul>
+</div>
+
+<!-- ===================== Q&A ===================== -->
+<div class="qa section-break">
+  <h2>Q&amp;A — answer routine</h2>
+  <div class="routine">
+    <b>1. Listen</b> → <b>2. Rephrase</b> the question → <b>3. PAUSE</b> &amp; structure → <b>4. Answer briefly.</b><br/>
+    Don't know? → "I don't know, but I'd expect <i>X</i> because… ; to confirm you'd need…" &nbsp;·&nbsp; <b>Never apologize.</b> &nbsp;·&nbsp; Press <b>O</b> for slide overview to jump to a backup.
+  </div>
+
+  <h2>Anticipated questions → backup slides</h2>
+
+  <div class="item">
+    <div class="q">Q: Why MiniRocket, not the more accurate Matrix Profile? → <b>B1</b></div>
+    <div class="a">Concede the 4-pt gap (MP 79% vs 75%). Chose speed — no self-join at inference. If pushed on overfitting: agree it's a risk, point to participant-level CV + future larger dataset.</div>
+  </div>
+
+  <div class="item">
+    <div class="q">Q: Why your own classifier, not ICLabel / MARA? → <b>B2</b></div>
+    <div class="a">Lead with <b>retrainability</b> on the team's labels + Python-native. Concede ICLabel (~0.84) beats mine (~0.75) and DOES output probabilities — do NOT claim "no calibrated probability exists." Contribution is the workflow, not the classifier.</div>
+  </div>
+
+  <div class="item">
+    <div class="q">Q: Two experts, one session — enough? → <b>B3</b></div>
+    <div class="a">Small panels typical for design studies. Own the limits: n=2, same lab, E1 co-designed → "liking ≠ validation." Frame "combination beats sum" as a <b>proposed</b> guideline awaiting field deployment. Next: weeks-long deploy, independent raters, task-time vs MNE.</div>
+  </div>
+
+  <div class="item">
+    <div class="q">Q: Can you explain individual recommendations? (XAI) → <b>B4</b></div>
+    <div class="a">16 topo weights = tabular → SHAP/DiCE works. 9,996 MiniRocket feats = pooled PPV, no time axis → naïve attribution = "kernel #4471 mattered" (uninterpretable). Needs kernel→time back-projection; cite TimeSHAP, Native-Guide. Tabular side is the near-term win.</div>
+  </div>
+
+  <div class="item">
+    <div class="q">Q: Architecture / preprocessing defaults? → <b>B5</b></div>
+    <div class="a">Flask (MNE, scikit-learn, aeon, umap) + React/canvas, two Docker containers. Defaults (50/100 notch, 1–75 IIR, 250 Hz, FastICA 16 comps) tuned to the lab, all configurable. Generalisation = single paradigm so far → future work.</div>
+  </div>
+
+  <div class="item">
+    <div class="q">Q: Why red/green colours? (accessibility)</div>
+    <div class="a">Matches European convention; concede red-green deficiency issue → configurable scheme for broader deployment (named in limitations).</div>
+  </div>
+
+  <div class="item">
+    <div class="q">Q: What would you do differently / next?</div>
+    <div class="a">Better muscle classifier (integrate MNE find_bads_muscle), more labs/raters, quantitative task-time study vs MNE, project artefact events onto trial timeline (E1 request), undo.</div>
+  </div>
+</div>
+
+</body>
+</html>

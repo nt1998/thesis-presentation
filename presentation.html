@@ -1,0 +1,564 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="robots" content="noindex">
+    <title>ICARUS — Master's Defense</title>
+    <link rel="stylesheet" href="./lib/revealjs/reset.css">
+    <link rel="stylesheet" href="./lib/revealjs/reveal.css">
+    <link rel="stylesheet" href="./lib/revealjs/theme/white.css">
+    <link rel="stylesheet" href="./lib/plugin/highlight/monokai.css">
+    <script src="./lib/tailwind.js"></script>
+    <script src="./lib/plugin/simplemenu/simplemenu.js"></script>
+    <style>
+        .reveal .slides section { text-align: left; }
+        .reveal h3 { color: #4a148c; text-transform: none; font-size: 46px; line-height: 1.2; }
+        .reveal h1 { text-transform: none; }
+        .fig      { max-height: 540px; width: auto; object-fit: contain; display: block; margin: 0 auto; }
+        .fig-split{ max-height: 440px; width: auto; object-fit: contain; display: block; margin: 0 auto; }
+        .fig-trip { max-height: 320px; width: auto; object-fit: contain; display: block; margin: 0 auto; }
+        .reveal .slides section img { max-height: 600px; }
+        .quote { border-left: 6px solid #4a148c; padding-left: 1rem; font-style: italic; color: #333; }
+        table.gap { font-size: 22px; width: 100%; border-collapse: collapse; }
+        table.gap th, table.gap td { padding: 4px 8px; text-align: center; }
+        table.gap td:first-child, table.gap th:first-child { text-align: left; }
+        table.gap td:not(:first-child) { font-size: 30px; }   /* bigger symbols */
+        table.gap thead tr { border-bottom: 2px solid #b39ddb; color: #4a148c; }
+        table.gap .me { background: #ede7f6; font-weight: 700; }
+        .yes { color: #000; font-weight: 700; }
+        .no  { color: #000; }
+        .par { color: #000; }
+        .muted { color: #000; }
+        table.gap td, table.gap tbody tr { border: none !important; }
+        .reveal .slides section.center { text-align: center; }
+        /* content slides: title pinned to top, body vertically centered below it */
+        .reveal .slides > section:not(.center) {
+            top: 0 !important;
+            height: 100% !important;
+            display: flex !important;
+            flex-direction: column;
+            justify-content: center;
+            box-sizing: border-box;
+            padding: 150px 50px 80px 50px !important;
+        }
+        .reveal .slides > section:not(.center) > h3 {
+            position: absolute;
+            top: 70px; left: 50px; right: 50px;
+            margin: 0;
+        }
+        /* title slide: top-anchored */
+        .reveal .slides > section:first-child {
+            justify-content: flex-start !important;
+            padding: 40px !important;
+        }
+    </style>
+</head>
+<body>
+<div class="reveal">
+    <div class="slides">
+
+        <!-- TITLE -->
+        <section data-background-image="./media/images/icarus_v2.jpeg" data-background-size="cover"
+                 data-transition="fade" data-state="hide-menubar hide-menu">
+            <div class="w-full flex justify-end">
+                <img src="./media/images/template/ivc_logo.png" class="h-[70px]"/>
+            </div>
+            <p class="text-purple-900 text-left text-[96px] font-extrabold leading-none mt-4">ICARUS</p>
+            <p class="text-purple-900 text-left text-[40px] font-semibold leading-tight mt-2 max-w-[62%]">A Design Study on Visual Analytics for EEG Artefact Removal</p>
+            <p class="text-left text-[28px] font-semibold mt-8">Niklas Tscheppe, BSc</p>
+            <p class="text-left text-[22px]">Master's Defense · Computer Science · Institute of Visual Computing</p>
+            <p class="text-left text-[24px] text-gray-800 font-medium mt-3">Supervisors: Julian Rakuschek, Tobias Schreck</p>
+            <p class="text-left text-[24px] text-gray-800 font-medium">Consultants: Michael Leitner, Selina Wriessnegger · Institute of Neural Engineering</p>
+            <p class="text-left text-[20px] text-gray-600 mt-2">25 June 2026</p>
+            <p class="absolute bottom-3 left-10 text-[14px] text-gray-400">Title image generated with ChatGPT, 2026</p>
+            <aside class="notes">
+Good Morning!<br/>
+Thanks for attending my masters defense on ICARUS (here what i stands for)<br/>
+ICARUS is the result of a design study on visual analytics for eeg artefact removal<br/>
+<br/>
+First i want to say thanks to Julian and Tobias for supervizing the thesis<br/>
+Special thanks to Selina and Michael for providing the domain knowledge and assisting throughout the whole process
+            </aside>
+        </section>
+
+        <!-- DESIGN STUDY -->
+        <section data-name="Design study">
+            <h3>Design Study Methodology (Sedlmair et al.)</h3>
+            <div class="flex flex-col items-center mt-10">
+                <img src="./media/thesis/sedlmair_hires.png" class="max-h-[480px] w-auto object-contain" alt="Nine-stage design study methodology"/>
+                <span class="text-[13px] text-gray-400 mt-2">Sedlmair et&nbsp;al., <em>Design Study Methodology</em>, IEEE TVCG 18(12):2431–2440, 2012. ©&nbsp;IEEE</span>
+            </div>
+            <aside class="notes">
+So what is a design study?<br/>
+problem driven visualization research: collaborate with real experts, solve real problem<br/>
+build a tool to solve it<br/>
+<br/>
+nine stages, three phases<br/>
+1. Precondition: learn about the problem, decide if there even is a need for a new tool and if it is worht further investigating<br/>
+2. Core: discover methods, design and implement solution<br/>
+3. Analysis: validate the solution and gather feedback
+            </aside>
+        </section>
+
+        <!-- WHAT IS EEG -->
+        <section data-name="Motivation">
+            <h3>Electroencephalography (EEG)</h3>
+            <div class="grid grid-cols-2 gap-8 items-center">
+                <div class="flex flex-col items-center">
+                    <img src="./media/thesis/eeg_sensor_placement.png" class="fig-split" alt="10–10 electrode layout"/>
+                    <span class="text-[15px] text-gray-400 mt-1">32-channel 10–10 electrode layout</span>
+                </div>
+                <div class="flex flex-col items-center">
+                    <img src="./media/thesis/eeg_cap.jpg" class="fig-split" alt="EEG recording cap on a person's head"/>
+                    <span class="text-[13px] text-gray-400 mt-1">"EEG Recording Cap" by Chris Hope · CC BY 2.0</span>
+                </div>
+            </div>
+            <aside class="notes">
+so what is eeg?<br/>
+eeg measures the electrical activity of the brain, right at the scalp<br/>
+variety of devices, from small portable ones with just a few sensors, to expensive or even implanted ones with 32 or more sensors<br/>
+<br/>
+so its used a lot: epilepsy detection, sleep studies, brain-computer interfaces, and cognitive research<br/>
+but the raw signal is basically unusable on its own
+            </aside>
+        </section>
+
+        <!-- EEG ARTEFACTS -->
+        <section>
+            <h3>EEG Artefacts</h3>
+            <img src="./media/thesis/raw_eeg_artefact.png" class="fig" alt="Raw EEG with eye-blink artefacts"/>
+            <aside class="notes">
+the reason: various artefacts from non-brain signals<br/>
+they can be even bigger than the brain activity itself (here you see eye blinks taking over the frontal channels)<br/>
+<br/>
+they also overlap the brain signal in time and frequency<br/>
+so you cant just filter or threshold all of them away
+            </aside>
+        </section>
+
+        <!-- ARTEFACT TYPES -->
+        <section>
+            <h3>Artefact Types</h3>
+            <div class="grid grid-cols-2 gap-8 items-center">
+                <div class="flex flex-col items-center">
+                    <img src="./media/thesis/jiang_artefact_overview.jpg" class="fig-split" alt="Raw traces of ocular, cardiac, and muscle artefacts"/>
+                    <span class="text-[13px] text-gray-400 mt-1">Jiang et&nbsp;al., <em>Removal of artifacts from EEG signals: a review</em>, Sensors 19(5):987, 2019. CC&nbsp;BY&nbsp;4.0</span>
+                </div>
+                <div class="text-[30px]">
+                    <div class="text-purple-900 font-semibold">Physiological</div>
+                    <ul class="space-y-1 mb-4">
+                        <li>Ocular</li>
+                        <li>Cardiac</li>
+                        <li>Muscle</li>
+                    </ul>
+                    <div class="text-purple-900 font-semibold">Technical</div>
+                    <ul class="space-y-1">
+                        <li>Line noise</li>
+                        <li>Electrode / channel noise</li>
+                        <li>Movement</li>
+                        <li>Environmental</li>
+                    </ul>
+                </div>
+            </div>
+            <aside class="notes">
+artefacts can be split in 2 groups:<br/>
+<br/>
+physiological, so from the body:<br/>
+ocular: eye movements and blinks, large and slow, mostly frontal<br/>
+cardiac: the heartbeat, rhythmic spikes<br/>
+muscle: from muscle contractions, spans all frequencies, hits every sensor - the hardest one<br/>
+<br/>
+technical, so external:<br/>
+mainly line noise at 50 hz, plus electrode, movement and environmental noise<br/>
+<br/>
+line noise we remove in preprocessing<br/>
+the body ones overlap the brain and have to be separated - thats ica
+            </aside>
+        </section>
+
+        <!-- ICA -->
+        <section>
+            <h3>Independent Component Analysis</h3>
+            <img src="./media/thesis/ica_toy_example.png" class="fig-split" alt="ICA cocktail-party decomposition"/>
+            <div class="text-[34px] mt-6 text-center">
+                <span class="font-mono bg-purple-100 px-5 py-2 rounded">X = A·S &nbsp;&nbsp;→&nbsp;&nbsp; Ŝ = W·X</span>
+            </div>
+            <aside class="notes">
+ica separates the mixed signal into independent sources<br/>
+<br/>
+think of the cocktail party problem: you are in a room where many people talk at once, and what you hear is all their voices mixed together<br/>
+ica is what pulls that mix back apart into the individual voices<br/>
+<br/>
+here its the same: the electrodes pick up brain activity, blinks and muscle all mixed together, and ica separates them into independent components. we then remove the "bad" ones and use back projection to rebuild the clean noice free version
+
+            </aside>
+        </section>
+
+        <!-- MANUAL CLASSIFICATION -->
+        <section>
+            <h3>Manual Component Classification</h3>
+            <div class="flex flex-col items-center mt-2">
+                <img src="./media/thesis/mne_ica_overlay_blink.png" class="fig-split" alt="EEG before (red) and after (black) ICA cleaning"/>
+                <span class="text-[14px] text-gray-400 mt-2">Figure: MNE-Python, <code>ica.plot_overlay</code> (sample dataset), BSD-3-Clause. Gramfort et&nbsp;al., <em>MEG and EEG data analysis with MNE-Python</em>, Front. Neurosci. 7:267, 2013.</span>
+            </div>
+            <aside class="notes">
+but ica doesnt tell you which component is brain and which is artefact<br/>
+so an expert goes through every single one and decides: keep or reject<br/>
+<br/>
+the rejected ones get removed and the clean signal is rebuilt (red before, black after - blinks gone, brain kept)<br/>
+<br/>
+and this is irreversible: reject a brain component and you lose real signal, keep an artefact and you keep noise<br/>
+thats why we keep the human in control<br/>
+<br/>
+and its the bottleneck: alot of participants, ~16 components each
+            </aside>
+        </section>
+
+        <!-- EXISTING TOOLS -->
+        <section>
+            <h3>Existing Tools</h3>
+            <table class="gap mt-1">
+                <thead><tr><th>Capability</th><th>MNE-Py</th><th>FieldTrip</th><th>EEGLAB</th><th>ICLabel</th><th>MARA</th><th>ADJUST</th></tr></thead>
+                <tbody>
+                    <tr><td colspan="7" style="text-align:left;font-style:italic;color:#6a1b9a;padding-top:6px;">Computational primitives</td></tr>
+                    <tr><td>ICA decomposition</td><td class="yes">●</td><td class="yes">●</td><td class="yes">●</td><td class="muted">—</td><td class="muted">—</td><td class="muted">—</td></tr>
+                    <tr><td>Power spectrum</td><td class="yes">●</td><td class="yes">●</td><td class="yes">●</td><td class="muted">—</td><td class="muted">—</td><td class="muted">—</td></tr>
+                    <tr><td>Algorithmic decision</td><td class="par">◐<sup>a</sup></td><td class="no">○</td><td class="no">○<sup>b</sup></td><td class="yes">●</td><td class="yes">●</td><td class="yes">●</td></tr>
+                    <tr><td>Confidence score</td><td class="par">◐<sup>a</sup></td><td class="no">○</td><td class="no">○<sup>b</sup></td><td class="yes">●</td><td class="yes">●</td><td class="no">○</td></tr>
+                    <tr><td>Cross-subject matching</td><td class="yes">●</td><td class="no">○</td><td class="par">◐</td><td class="muted">—</td><td class="muted">—</td><td class="muted">—</td></tr>
+                    <tr><td colspan="7" style="text-align:left;font-style:italic;color:#6a1b9a;padding-top:6px;">Interactive workflow</td></tr>
+                    <tr><td>Single-component view</td><td class="yes">●</td><td class="par">◐</td><td class="par">◐</td><td class="muted">—</td><td class="muted">—</td><td class="par">◐</td></tr>
+                    <tr><td>Linked view updates</td><td class="no">○</td><td class="no">○</td><td class="no">○</td><td class="muted">—</td><td class="muted">—</td><td class="muted">—</td></tr>
+                    <tr><td>Cross-participant browser</td><td class="no">○</td><td class="no">○</td><td class="par">◐</td><td class="muted">—</td><td class="muted">—</td><td class="muted">—</td></tr>
+                    <tr><td>Component clustering view</td><td class="no">○</td><td class="no">○</td><td class="par">◐</td><td class="muted">—</td><td class="muted">—</td><td class="muted">—</td></tr>
+                    <tr><td>Batch apply recommendations</td><td class="no">○</td><td class="no">○</td><td class="no">○<sup>b</sup></td><td class="muted">—</td><td class="muted">—</td><td class="muted">—</td></tr>
+                    <tr><td>Label export</td><td class="yes">●</td><td class="par">◐</td><td class="par">◐</td><td class="yes">●</td><td class="yes">●</td><td class="yes">●</td></tr>
+                </tbody>
+            </table>
+            <p class="text-[18px] text-gray-600 mt-2">● supported · ○ absent in core · ◐ partial. &nbsp; <sup>a</sup> per-artefact detectors, no unified classifier/calibrated probability. &nbsp; <sup>b</sup> via plugins.</p>
+            <aside class="notes">
+before building own solution, we look at whats already out there<br/>
+<br/>
+mne, fieldtrip and eeglab give you the views and the primitives<br/>
+iclabel, mara and adjust give you automated labels<br/>
+<br/>
+but no single tool combines all of it: linked views, a cross-participant overview, and ml recommendations<br/>
+thats the gap we fill
+            </aside>
+        </section>
+
+        <!-- RESEARCH QUESTIONS -->
+        <section>
+            <h3>Research Questions</h3>
+            <div class="space-y-8 mt-6">
+                <div class="bg-purple-100 p-6 rounded">
+                    <span class="text-purple-900 font-bold text-[32px]">RQ1</span>
+                    <p class="text-[32px] m-0">Which visualisation and interaction techniques support expert decision-making in ICA artefact classification?</p>
+                </div>
+                <div class="bg-purple-100 p-6 rounded">
+                    <span class="text-purple-900 font-bold text-[32px]">RQ2</span>
+                    <p class="text-[32px] m-0">How can machine learning recommendations and interactive visualisation techniques be integrated to accelerate classification while preserving expert control?</p>
+                </div>
+            </div>
+            <aside class="notes">
+that leads to two research questions<br/>
+<br/>
+rq1: which visualization and interaction techniques support the expert in this decision<br/>
+rq2: how to bring in machine learning to speed it up, while keeping the expert in control
+            </aside>
+        </section>
+
+        <!-- REQUIREMENTS -->
+        <section data-name="Approach">
+            <h3>Requirements</h3>
+            <p class="text-[26px] mb-5">The system should support the user in…</p>
+            <ul class="text-[26px] space-y-3">
+                <li><strong>R1</strong> …receiving visual recommendations on which components to keep or reject.</li>
+                <li><strong>R2</strong> …gaining an overview of all components and supporting exploration, pattern recognition, and context for uncertain classification decisions.</li>
+                <li><strong>R3</strong> …inspecting when and how artefacts appear in the recording over time.</li>
+                <li><strong>R4</strong> …visually distinguishing brain activity from artefacts.</li>
+                <li><strong>R5</strong> …seeing how a component's activity is distributed across the scalp sensors.</li>
+                <li><strong>R6</strong> …logging and exporting classification decisions for reproducibility and team consistency.</li>
+            </ul>
+            <aside class="notes">
+from the interviews with the experts we derived six requirements<br/>
+<br/>
+they fall into three groups: overview and guidance, component inspection, and the workflow itself<br/>
+<br/>
+the point: every feature in the tool maps back to one of these
+            </aside>
+        </section>
+
+        <!-- SYSTEM ARCHITECTURE -->
+        <section data-name="System">
+            <h3>System Architecture</h3>
+            <img src="./media/thesis/architecture_diagram.png" class="fig" style="max-height:640px;max-width:100%;" alt="System architecture"/>
+            <aside class="notes">
+short overview of the architecture<br/>
+two docker containers: a python/flask backend and a react frontend, talking over a rest api<br/>
+<br/>
+the backend does preprocessing, ml and file handling - the standard stack, mne, scikit-learn, minirocket, umap<br/>
+the defaults are tuned to the lab but configurable per study
+            </aside>
+        </section>
+
+        <!-- WORKFLOW -->
+        <section>
+            <h3>Classification Workflow</h3>
+            <img src="./media/thesis/workflow.png" class="fig" style="max-height:680px;max-width:100%;" alt="Classification workflow"/>
+            <aside class="notes">
+this is the whole workflow in one tool<br/>
+<br/>
+a: the expert preprocesses a study<br/>
+b: applies the high-confidence recommendations in bulk<br/>
+c: inspects the uncertain ones<br/>
+d: can check the cross-participant clusters anytime<br/>
+<br/>
+and at the end you export the labels back into the pipeline
+            </aside>
+        </section>
+
+        <!-- CONFIDENCE RECOMMENDER (tiers) -->
+        <section>
+            <h3>Confidence Recommender</h3>
+            <img src="./media/thesis/tier_tooltips.png" class="fig-split" alt="Five-colour confidence bar, three tiers"/>
+            <ul class="text-[32px] mt-6 space-y-4">
+                <li><strong>Tier 1</strong>: high-confidence</li>
+                <li><strong>Tier 2</strong>: quick review</li>
+                <li><strong>Tier 3</strong>: manual inspection</li>
+            </ul>
+            <aside class="notes">
+first building block, the recommender<br/>
+<br/>
+the model gives every component a keep-probability, and we map that onto three tiers:<br/>
+tier 1: confident enough to just batch-apply<br/>
+tier 2: a quick review<br/>
+tier 3: the uncertain middle, you inspect by hand<br/>
+<br/>
+muscle is the hard one, so it gets its own badge on the side<br/>
+and important: its only an indicator, it never decides for you - the expert confirms everything
+            </aside>
+        </section>
+
+        <!-- PARTICIPANTS & COMPONENTS OVERVIEW -->
+        <section>
+            <h3>Participants and Components Overview</h3>
+            <img src="./media/thesis/component_selection_latest.png" class="fig" style="max-height:660px;max-width:100%;" alt="Component selection view with per-component recommendations"/>
+            <aside class="notes">
+this is where you start<br/>
+<br/>
+left: all the participants with their counts<br/>
+right: the selected participants components, each with its confidence bar and a muscle badge<br/>
+<br/>
+one apply button does the bulk work, and it never overwrites what you labelled by hand<br/>
+and you click a component to open it
+            </aside>
+        </section>
+
+        <!-- COMPONENT INSPECTOR -->
+        <section>
+            <h3>Component Inspector</h3>
+            <!-- TODO: swap this <img> for the looping muted demo video once recorded -->
+            <img src="./media/thesis/inspector_overview.png" class="fig" alt="Component inspector with coordinated views"/>
+            <aside class="notes">
+clicking a component opens the inspector - the heart of the tool<br/>
+<br/>
+all the views on one screen: topomap, spectrum, timeline<br/>
+everything is linked updates together<br/>
+mouse and keyboard controls
+
+lets look at each part individually:
+            </aside>
+        </section>
+
+        <!-- COMPONENT CLUSTER + MAPPER (first individual view) -->
+        <section>
+            <h3>Component Cluster and Mapper Graph</h3>
+            <img src="./media/thesis/mapper.png" class="fig" style="max-height:640px;max-width:100%;" alt="Component Cluster (left) and Mapper Graph (right)"/>
+            <aside class="notes">
+and a view across all participants<br/>
+<br/>
+every component from every participant in one 2d space, arranged by similarity (cosine)<br/>
+the cluster shows one dot per component; the mapper groups nearby ones into nodes<br/>
+<br/>
+the useful part is spotting outliers: a dot in the wrong colour could possibly be a misclassification -> further inspection<br/>
+
+swtich to mapper: zoomed out overview of the clusters with a pie chart or coloring derived from the components it contains
+            </aside>
+        </section>
+
+        <!-- INSPECTOR VIEW: Topomap -->
+        <section>
+            <h3>Topomap</h3>
+            <img src="./media/thesis/crop_topomap.png" class="fig" style="max-height:640px;" alt="Topomap view"/>
+            <aside class="notes">
+the topomap: how strongly each sensor contributes, and the polarity<br/>
+the pattern tells you the source: dipolar is brain, frontal is eye, a peripheral patch is muscle, a single electrode is a bad channel<br/>
+            </aside>
+        </section>
+
+        <!-- INSPECTOR VIEW: PSD -->
+        <section>
+            <h3>Power Spectral Density</h3>
+            <img src="./media/thesis/crop_psd.png" class="fig" style="max-height:640px;" alt="Power spectral density view"/>
+            <aside class="notes">
+second, the psd<br/>
+<br/>
+shape can tell alot about the component, if its an artefact or if its brain activity.
+            </aside>
+        </section>
+
+        <!-- INSPECTOR VIEW: Timeline -->
+        <section>
+            <h3>Timeline</h3>
+            <img src="./media/thesis/crop_timeline.png" class="fig" style="max-height:520px;max-width:100%;" alt="Timeline view"/>
+            <p class="text-[28px] mt-5 text-center">Overlays: EOG markers · trial markers · PSD clusters</p>
+            <aside class="notes">
+third, the timeline - the signal over the whole recording<br/>
+<br/>
+mostly used to confirm, and to select a time range that then updates the topomap and spectrum<br/>
+it also has three overlays: eog markers, trial markers, and psd clusters
+            </aside>
+        </section>
+
+        <!-- PSD CLUSTERING -->
+        <section>
+            <h3>PSD Clustering</h3>
+            <img src="./media/thesis/all_clusters.png" class="fig" style="max-height:520px;max-width:100%;" alt="All Clusters: each cluster's mean power spectrum"/>
+            <p class="text-[26px] mt-5 text-center">K-means on windowed spectra colour-codes the timeline where a component's frequency profile changes</p>
+            <aside class="notes">
+quick look at that last overlay, psd clustering<br/>
+<br/>
+it clusters the psd of short time windows and colours the timeline by it<br/>
+so you can see at a glance where a components frequency profile changes over time
+            </aside>
+        </section>
+
+        <!-- EVALUATION (single concise slide) -->
+        <section data-name="Evaluation">
+            <h3>Evaluation</h3>
+            <ol class="text-[30px] space-y-4 list-decimal ml-8">
+                <li><strong>Recommendations</strong>: review the Tier 1 recommendations, accept three correct ones, and find at least one to overrule</li>
+                <li><strong>Artefact identification</strong>: find a component that could be an eye blink and validate it with the topographic map</li>
+                <li><strong>Band power analysis</strong>: examine a low-scored component's band-power clusters on the timeline and interpret the segments</li>
+                <li><strong>Mapper exploration</strong>: using the Mapper Graph, find a mostly-reject cluster, name its artefact type, and re-check any keep labels</li>
+                <li><strong>View comparison</strong>: compare the Component Cluster and the Mapper Graph and discuss which is more helpful</li>
+            </ol>
+            <aside class="notes">
+finally the evaluation<br/>
+<br/>
+was done with two domain experts, on their own real recordings, thinking aloud<br/>
+five hands-on tasks that touched every part of the tool<br/>
+<br/>
+two takeaways:<br/>
+the order they looked at things matched our layout<br/>
+and the big one: the cross-participant overview let them catch a component that had been mislabeled<br/>
+<br/>
+so the value is really the combination: the model handles the easy cases, the expert stays in control of the rest
+            </aside>
+        </section>
+
+        <!-- END / THANK YOU -->
+        <section data-background-image="./media/images/icarus_v2.jpeg" data-background-size="cover"
+                 data-transition="fade" data-state="hide-menubar hide-menu">
+            <aside class="notes">
+thank you for your attention<br/>
+happy to take your questions
+            </aside>
+        </section>
+
+        <!-- ===================== BACKUP ===================== -->
+        <section class="center" data-background-color="#311b4f" data-state="hide-menubar hide-menu">
+            <h1 style="color:white;">Backup</h1>
+            <p class="text-purple-200 text-[24px] text-center">Q&amp;A support. Press <strong>O</strong> for overview.</p>
+            <aside class="notes">Not shown in the talk. Flip here to answer, then return.</aside>
+        </section>
+
+        <!-- BACKUP: Recommender Pipeline -->
+        <section data-state="hide-menubar hide-menu">
+            <h3>Recommender Pipeline</h3>
+            <img src="./media/thesis/ml_flowchart.png" class="fig-split" alt="Recommender inference pipeline"/>
+            <ul class="text-[24px] mt-2 space-y-1">
+                <li>MiniRocket features + 16 topography weights → keep-probability → tiers</li>
+                <li>480 components / 30 participants · ~75% test accuracy</li>
+            </ul>
+            <aside class="notes">why MiniRocket → see experiments slide; ICLabel question → answer verbally; do NOT volunteer "second-best model".</aside>
+        </section>
+
+        <!-- BACKUP: Recommender Training (pseudocode) -->
+        <section data-state="hide-menubar hide-menu">
+            <h3>Recommender Training</h3>
+            <pre style="font-size:21px; line-height:1.35; border-radius:8px; width:auto; max-height:560px;"><code class="language-python" data-trim>def train_recommender(labelled_components):
+    X, y = [], []
+    for c in labelled_components:        # ICs from 1+ experiments
+        ts   = pad_or_truncate(c.time_series)   # uniform length
+        feat = MiniRocket().transform(ts)       # 9,996 features
+        topo = c.unmixing_row                   # 16 spatial weights
+        X.append(concat(feat, topo))            # 10,012-dim vector
+        y.append(c.label)                       # keep / reject
+
+    model = RandomForest(n_estimators=100)
+    model.fit(X, y)
+    save(model)
+    return model</code></pre>
+            <aside class="notes">backup if asked how the model is trained<br/>
+labelled components from one or more experiments<br/>
+each ones time series goes through minirocket for the 9996 features, plus 16 topography weights from the unmixing matrix row<br/>
+concatenate both, train a random forest with 100 trees<br/>
+at inference the forests vote share is the keep-probability that drives the tiers</aside>
+        </section>
+
+        <!-- BACKUP: Classification Experiments -->
+        <section data-state="hide-menubar hide-menu">
+            <h3>Classification Experiments</h3>
+            <table class="gap" style="font-size:19px;">
+                <thead><tr><th>Exp</th><th>Features</th><th>CV</th><th>Test</th><th>Rej. rec.</th></tr></thead>
+                <tbody>
+                    <tr><td>01</td><td>MiniRocket + Ridge (single split)</td><td>—</td><td>77%</td><td>58%</td></tr>
+                    <tr><td>02</td><td>MiniRocket + Ridge + CV</td><td>70%</td><td>70%</td><td>58%</td></tr>
+                    <tr><td>03</td><td>MultiRocket + Ridge + CV</td><td>56%</td><td>48%</td><td>52%</td></tr>
+                    <tr><td>04</td><td>MultiRocket + Topography + RF</td><td>63%</td><td>75%</td><td>70%</td></tr>
+                    <tr style="background:#e8f5e9;"><td>05</td><td>Matrix Profile + Topography + RF (best)</td><td>67%</td><td><strong>79%</strong></td><td>76%</td></tr>
+                    <tr class="me"><td>06</td><td>MiniRocket + Topography + RF (deployed)</td><td>65%</td><td>75%</td><td>70%</td></tr>
+                    <tr><td>07</td><td>All-to-all MP similarity + Topo + RF</td><td>67%</td><td>72%</td><td>58%</td></tr>
+                    <tr><td>08</td><td>Multi-scale MP + Spectral + Topo (6 models)</td><td>65–73%</td><td>61–69%</td><td>—</td></tr>
+                    <tr><td>09a</td><td>Feature selection (RFE, 20 of 40)</td><td>—</td><td>70%</td><td>—</td></tr>
+                </tbody>
+            </table>
+            <aside class="notes">if asked why MiniRocket: speed at inference, accuracy comparable; Exp 05 best on test but slower.</aside>
+        </section>
+
+        <!-- BACKUP: Label Export -->
+        <section data-state="hide-menubar hide-menu">
+            <h3>Data Flow</h3>
+            <img src="./media/thesis/data_flow.png" class="fig" style="max-height:640px;max-width:100%;" alt="Data flow"/>
+            <aside class="notes">closes the loop; re-enters the exact MNE pipeline they use. Retraining is supported (not shown to improve accuracy).</aside>
+        </section>
+
+    </div>
+</div>
+
+<script src="./lib/revealjs/reveal.js"></script>
+<script src="./lib/plugin/notes/notes.js"></script>
+<script src="./lib/plugin/markdown/markdown.js"></script>
+<script src="./lib/plugin/highlight/highlight.js"></script>
+<script src="./lib/plugin/math/math.js"></script>
+<script>
+    Reveal.initialize({
+        simplemenu: {
+            flat: true,
+            inherit: "previous",
+            barhtml: {
+                header: "<div class='menubar'><div class='slide-number'></div><ul class='menu'></ul></div>",
+                footer: "<div class='menubar p-3 items-center'><div>Niklas Tscheppe <br /> <span class='text-[20px]'>A Design Study on Visual Analytics for EEG Artefact Removal</span></div><div><img src='./media/images/template/ivc_logo.png' class='h-12' /></div></div>"
+            }
+        },
+        hash: false, history: false, slideNumber: true, controls: false, progress: true,
+        mouseWheel: true, disableLayout: false, pdfSeparateFragments: false, touch: true, controlsTutorial: true,
+        plugins: [RevealMarkdown, RevealHighlight, RevealNotes, RevealMath.KaTeX, Simplemenu],
+        width: 1600, height: 900, center: false
+    });
+</script>
+</body>
+</html>

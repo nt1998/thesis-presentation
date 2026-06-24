@@ -1,0 +1,374 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>ICARUS — Talking Cards (A5)</title>
+<style>
+  @page { size: A5 landscape; margin: 10mm; }
+  * { box-sizing: border-box; }
+  body { font-family: "Helvetica Neue", Arial, sans-serif; color:#000; margin:0; }
+  .card {
+    page-break-after: always;
+    height: 128mm;                 /* A5 landscape printable height after margins */
+    display:flex; flex-direction:column;
+    padding: 2mm 2mm;
+  }
+  .hd { display:flex; align-items:baseline; gap:12px; border-bottom:1.5px solid #000; padding-bottom:6px; }
+  .num { font-weight:800; font-size:20px; }
+  .ttl { font-size:28px; font-weight:800; letter-spacing:-0.2px; }
+  .time { margin-left:auto; font-size:15px; }
+  /* body fills the card and centres vertically so content isn't top-clustered */
+  .body { flex:1; display:flex; flex-direction:column; justify-content:center; gap:4px; }
+  .open { font-size:21px; font-weight:600; font-style:italic; margin:0 0 6px; }
+  .sub { font-weight:800; font-size:17px; margin:8px 0 1px; }
+  ul.pts { font-size:19px; line-height:1.5; padding-left:22px; margin:0; }
+  ul.pts li { margin:8px 0; }
+  .kw { font-weight:800; }
+  .verb { font-size:19px; font-style:italic; line-height:1.45; }
+  .verb b { font-style:normal; font-weight:800; }
+  .tag { font-weight:800; font-style:normal; }
+  .foot { margin-top:auto; }
+  .note { border-top:1px solid #000; padding-top:6px; font-size:15px; }
+  .note b { font-weight:800; }
+  /* denser cards (lots of items) */
+  .dense .open { font-size:18px; }
+  .dense ul.pts { font-size:15.5px; line-height:1.32; }
+  .dense ul.pts li { margin:4px 0; }
+  .dense .sub { font-size:15px; margin:6px 0 0; }
+  @media screen { .card { border:1px solid #bbb; margin:0 auto 8px; max-width:210mm; } }
+</style>
+</head>
+<body>
+
+<!-- 1 -->
+<div class="card">
+  <div class="hd"><span class="num">1</span><span class="ttl">Title</span><span class="time">0:00</span></div>
+  <div class="body">
+    <p class="verb"><b>SAY:</b> "Good morning. My thesis is a design study on visual analytics for EEG artefact removal — a tool called ICARUS, built with EEG experts here at TU Graz."</p>
+  </div>
+  <div class="foot"><div class="note"><b>cue —</b> reset timer · breathe · look up</div></div>
+</div>
+
+<!-- 2 -->
+<div class="card">
+  <div class="hd"><span class="num">2</span><span class="ttl">Design Study Methodology</span><span class="time">~1:00</span></div>
+  <div class="body">
+    <div class="open">▶ "First, how I approached this."</div>
+    <ul class="pts">
+      <li>A <span class="kw">design study</span> is <span class="kw">problem-driven</span> visualisation research: work with real experts on a real problem and build a tool — opposite of technique-driven work that invents an algorithm in isolation.</li>
+      <li>Nine stages, three phases: Precondition (learn, pick collaboration), Core (discover, design, implement, deploy), Analysis (reflect, write) — validated by the experts throughout.</li>
+      <li>Key point: the contribution can be a <span class="kw">well-justified combination of existing techniques</span> — no new algorithm required.</li>
+      <li>Ran it with the Institute of Neural Engineering over several months — meetings, prototype reviews, interviews.</li>
+    </ul>
+  </div>
+  <div class="foot"><div class="note"><b>Not here —</b> don't enumerate the nine stages.</div></div>
+</div>
+
+<!-- 3 -->
+<div class="card">
+  <div class="hd"><span class="num">3</span><span class="ttl">Electroencephalography (EEG)</span><span class="time">~1:45</span></div>
+  <div class="body">
+    <div class="open">▶ "The data we work with is EEG."</div>
+    <ul class="pts">
+      <li>Measures the voltages from <span class="kw">neurons' post-synaptic potentials</span> at the scalp, at <span class="kw">millisecond</span> resolution — great for timing.</li>
+      <li><span class="kw">Non-invasive, portable, low-cost</span> → a workhorse in research and the clinic.</li>
+      <li>Used for epilepsy diagnosis, sleep staging, brain–computer interfaces, cognitive studies.</li>
+      <li>Electrodes on the standard <span class="kw">10–10 system</span>; 32-channel subset here (left: layout, right: real cap).</li>
+      <li>Raw EEG is essentially <span class="kw">unusable as-is</span> — needs preprocessing; conclusion quality depends on signal quality.</li>
+    </ul>
+  </div>
+  <div class="foot"><div class="note"><b>Not here —</b> the artefacts (next slide).</div></div>
+</div>
+
+<!-- 4 -->
+<div class="card">
+  <div class="hd"><span class="num">4</span><span class="ttl">EEG Artefacts</span><span class="time">~2:30</span></div>
+  <div class="body">
+    <div class="open">▶ "And every recording is full of non-brain signal."</div>
+    <ul class="pts">
+      <li>An <span class="kw">artefact</span> = any potential not from the brain; can be <span class="kw">larger than the brain activity itself</span> → dominates the trace (fig: blinks burying the frontal channels).</li>
+      <li>From the body (eyes, muscle, heart) and from outside (power line, movement).</li>
+      <li>They <span class="kw">overlap the brain signal in time and frequency</span> → can't just band-pass or threshold them away.</li>
+      <li>Slip through → corrupt the analysis (wrong artefacts in, wrong conclusions out).</li>
+    </ul>
+  </div>
+  <div class="foot"><div class="note"><b>Not here —</b> the specific types (next slide).</div></div>
+</div>
+
+<!-- 5 -->
+<div class="card dense">
+  <div class="hd"><span class="num">5</span><span class="ttl">Artefact Types</span><span class="time">~3:15</span></div>
+  <div class="body">
+    <div class="open">▶ "Two families — and each behaves differently."</div>
+    <div class="sub">Physiological (from the body)</div>
+    <ul class="pts">
+      <li><span class="kw">Ocular</span> — eye movements/blinks; eyes sit next to the brain → <span class="kw">most common &amp; impactful</span>; large, slow, low-frequency, frontal; measured by EOG.</li>
+      <li><span class="kw">Cardiac</span> — the heartbeat; <span class="kw">rhythmic sharp spikes</span> mirroring the ECG, strongest over the left temporal area.</li>
+      <li><span class="kw">Muscle (EMG)</span> — head/neck contractions; random, non-repetitive; <span class="kw">below 1 Hz to over 200 Hz</span> → hits every band; on all sensors → the <span class="kw">hardest</span> to remove.</li>
+    </ul>
+    <div class="sub">Technical (external)</div>
+    <ul class="pts">
+      <li><span class="kw">Line noise</span> — 50 Hz mains, constant on all channels; removed by a notch filter.</li>
+      <li><span class="kw">Electrode/channel</span> — poor contact/dry gel → jumps, flat lines, a single noisy electrode.</li>
+      <li><span class="kw">Movement</span> — cable/electrode shifts → sudden deflections. &nbsp; <span class="kw">Environmental</span> — nearby devices.</li>
+      <li>Punchline: <span class="kw">line noise → preprocessing</span>; physiological ones overlap the brain and must be <span class="kw">separated → ICA</span>. Muscle is the hard one.</li>
+    </ul>
+  </div>
+  <div class="foot"><div class="note"><b>Not here —</b> how we separate them (ICA, next).</div></div>
+</div>
+
+<!-- 6 -->
+<div class="card">
+  <div class="hd"><span class="num">6</span><span class="ttl">Independent Component Analysis</span><span class="time">~4:15</span></div>
+  <div class="body">
+    <div class="open">▶ "The standard way to separate them is ICA."</div>
+    <ul class="pts">
+      <li>Unmixes the electrode mixture into <span class="kw">statistically independent components</span>, one per source.</li>
+      <li><span class="kw">Cocktail-party problem</span>: microphones each pick up a mixture of voices; ICA recovers the voices. Electrodes = microphones.</li>
+      <li><span class="kw">X = A·S</span>; estimate <span class="kw">W ≈ A⁻¹</span> so <span class="kw">Ŝ = W·X</span>; works by maximising non-Gaussianity (FastICA).</li>
+      <li>Each component carries a <span class="kw">topography, a spectrum, and a time course</span> → these become the three views.</li>
+      <li>#components ≤ #electrodes; default <span class="kw">16</span> per recording.</li>
+    </ul>
+  </div>
+  <div class="foot"><div class="note"><b>Not here —</b> classification (next slide).</div></div>
+</div>
+
+<!-- 7 -->
+<div class="card">
+  <div class="hd"><span class="num">7</span><span class="ttl">Manual Component Classification</span><span class="time">~5:00</span></div>
+  <div class="body">
+    <div class="open">▶ "But ICA doesn't tell you which component is brain and which is artefact."</div>
+    <ul class="pts">
+      <li>An <span class="kw">expert looks at every component</span> and decides keep (brain) / reject (artefact) from the three properties.</li>
+      <li>Rejected ones removed by <span class="kw">back-projection</span> — signal rebuilt from kept components (fig: blinks red → gone in black).</li>
+      <li><span class="kw">Irreversible &amp; asymmetric:</span> wrong reject deletes real signal; wrong keep leaves noise → keep the human in control.</li>
+      <li><span class="kw">The bottleneck:</span> hundreds of participants × ~16 components → slow, rushed, inconsistent; reasoning never recorded.</li>
+    </ul>
+  </div>
+  <div class="foot"><div class="note"><b>cue —</b> fig is MNE sample data, illustrative.</div></div>
+</div>
+
+<!-- 8 -->
+<div class="card">
+  <div class="hd"><span class="num">8</span><span class="ttl">Existing Tools</span><span class="time">~6:00</span></div>
+  <div class="body">
+    <div class="open">▶ "Don't existing tools already do this?"</div>
+    <ul class="pts">
+      <li><span class="kw">MNE-Python</span> — richest primitives; <code>plot_properties</code> (topo+spectrum+epochs) + per-artefact detectors, but <span class="kw">no unified classifier, no calibrated confidence</span>.</li>
+      <li><span class="kw">FieldTrip</span> — MATLAB; ICA classification is script-driven/manual; no automated step, no cross-recording view.</li>
+      <li><span class="kw">EEGLAB</span> — GUI grid + per-component popups; cross-subject clustering needs manual setup; classifier = ICLabel plugin.</li>
+      <li><span class="kw">ICLabel / MARA / ADJUST</span> — automated labels/probabilities, but no interactive interface, fixed outputs.</li>
+      <li>Table: <span class="kw">no single tool combines</span> linked views + cross-participant overview + batch-apply + calibrated confidence.</li>
+    </ul>
+  </div>
+  <div class="foot"><div class="note"><b>Not here —</b> don't narrate every cell; don't say "novel" — own the combination.</div></div>
+</div>
+
+<!-- 9 -->
+<div class="card">
+  <div class="hd"><span class="num">9</span><span class="ttl">Research Questions</span><span class="time">~6:45</span></div>
+  <div class="body">
+    <div class="open">▶ "This gives me two research questions."</div>
+    <ul class="pts">
+      <li><span class="kw">RQ1</span> — which visualisation &amp; interaction techniques support expert decision-making in ICA artefact classification?</li>
+      <li><span class="kw">RQ2</span> — how can ML recommendations and interactive visualisation be integrated to accelerate classification while preserving expert control?</li>
+      <li>These two are the contract for the rest of the talk.</li>
+    </ul>
+  </div>
+  <div class="foot"><div class="note"><b>cue —</b> read both slowly · PAUSE.</div></div>
+</div>
+
+<!-- 10 -->
+<div class="card">
+  <div class="hd"><span class="num">10</span><span class="ttl">Requirements</span><span class="time">~7:30</span></div>
+  <div class="body">
+    <div class="open">▶ "Six requirements came straight out of the design study."</div>
+    <ul class="pts">
+      <li>Derived from the <span class="kw">discovery interviews</span> — each is a real need, not a guess.</li>
+      <li><span class="kw">Overview &amp; guidance</span> — R1 keep/reject recommendations · R2 an overview of all components.</li>
+      <li><span class="kw">Component inspection</span> — R3 over time · R4 brain vs artefact · R5 scalp distribution.</li>
+      <li><span class="kw">Workflow</span> — R6 log &amp; export decisions for reproducibility and team consistency.</li>
+      <li>Every feature maps back to one of these.</li>
+    </ul>
+  </div>
+  <div class="foot"><div class="note"><b>Not here —</b> don't read all six word-for-word — group them.</div></div>
+</div>
+
+<!-- 11 -->
+<div class="card">
+  <div class="hd"><span class="num">11</span><span class="ttl">System Architecture</span><span class="time">~8:15</span></div>
+  <div class="body">
+    <div class="open">▶ "Briefly, how it's built."</div>
+    <ul class="pts">
+      <li><span class="kw">Two Docker containers</span>: Flask backend (preprocessing, ML inference, files) + React/nginx frontend, REST API.</li>
+      <li>Standard stack: MNE-Python, scikit-learn, aeon/MiniRocket, umap-learn; loads XDF.</li>
+      <li>Frontend draws every visualisation on <span class="kw">HTML canvas</span>.</li>
+      <li>Defaults (50/100 Hz notch, 1–75 Hz, 250 Hz, FastICA 16) tuned to the lab, <span class="kw">configurable per study</span>.</li>
+    </ul>
+  </div>
+  <div class="foot"><div class="note"><b>Not here —</b> don't dwell, it's plumbing; ML pipeline is backup.</div></div>
+</div>
+
+<!-- 12 -->
+<div class="card">
+  <div class="hd"><span class="num">12</span><span class="ttl">Classification Workflow</span><span class="time">~9:00</span></div>
+  <div class="body">
+    <div class="open">▶ "The whole workflow lives in one tool — end to end."</div>
+    <ul class="pts">
+      <li><span class="kw">(A) Preprocess</span> — create a study (multi-participant, shared config), upload, run.</li>
+      <li><span class="kw">(B) Apply recommendations</span> — model scores every component; apply the confident ones in bulk.</li>
+      <li><span class="kw">(C) Inspect</span> — open the coordinated views for the uncertain ones.</li>
+      <li><span class="kw">(D) Control clusters</span> — check the cross-participant overview for outliers; then <span class="kw">export</span> + optional retrain.</li>
+    </ul>
+  </div>
+  <div class="foot"><div class="note"><b>Not here —</b> don't explain each view (own slides next).</div></div>
+</div>
+
+<!-- 13 -->
+<div class="card">
+  <div class="hd"><span class="num">13</span><span class="ttl">Confidence Recommender</span><span class="time">~10:00</span></div>
+  <div class="body">
+    <div class="open">▶ "First building block — the recommender."</div>
+    <ul class="pts">
+      <li>A <span class="kw">keep-probability</span> per component (1 = brain, 0 = artefact).</li>
+      <li>Three tiers (five bands, symmetric around 50%): <span class="kw">Tier 1</span> ≥75% / ≤25% (batch-apply), <span class="kw">Tier 2</span> 60–75% / 25–40% (quick review), <span class="kw">Tier 3</span> 40–60% (manual).</li>
+      <li>Principle: <span class="kw">classification with a reject option</span> — uncertain cases go to the expert.</li>
+      <li>Muscle is hard → a <span class="kw">separate badge</span> from MNE's detector (faded 50–70%, solid &gt;70%).</li>
+      <li><span class="kw">Indicator only</span> — never pre-sets the decision; expert confirms each (came from the evaluation).</li>
+    </ul>
+  </div>
+  <div class="foot"><div class="note"><b>Not here —</b> ML internals/accuracy = backup. ~40% in Tier 1 only if asked.</div></div>
+</div>
+
+<!-- 14 -->
+<div class="card">
+  <div class="hd"><span class="num">14</span><span class="ttl">Participants &amp; Components Overview</span><span class="time">~10:45</span></div>
+  <div class="body">
+    <div class="open">▶ "You start from this overview."</div>
+    <ul class="pts">
+      <li><span class="kw">Left:</span> every participant with their tally — kept / rejected / undecided of total.</li>
+      <li><span class="kw">Right:</span> that participant's components, each with a confidence bar, a one-click tier button, and a muscle badge.</li>
+      <li>One <span class="kw">Apply</span>: auto-rejects undecided muscle-flagged components, then applies Tier 1 to the rest — <span class="kw">never overwrites manual labels</span> (reset available).</li>
+      <li>Click a row → opens the inspector.</li>
+    </ul>
+  </div>
+  <div class="foot"><div class="note"><b>Not here —</b> the inspector detail (next slide).</div></div>
+</div>
+
+<!-- 15 -->
+<div class="card">
+  <div class="hd"><span class="num">15</span><span class="ttl">Component Inspector</span><span class="time">~11:30</span></div>
+  <div class="body">
+    <div class="open">▶ "Click a component and the inspector opens — the heart of the tool."</div>
+    <ul class="pts">
+      <li>All views for <span class="kw">one component on a single screen</span>: recommender bar, cluster, topomap, spectrum, timeline.</li>
+      <li>Move to another component (row, cluster point, arrow keys) → it stays open and <span class="kw">every linked view updates together</span>.</li>
+      <li>That's what the <span class="kw">script workflow can't do</span> — there you regenerate static plots per component and lay them out yourself.</li>
+      <li>Quote: "the entire visualisation on one screen, more or less."</li>
+    </ul>
+    <p class="verb"><b class="tag">DEMO LOOP</b> — narrate it; look at the committee, not the screen.</p>
+  </div>
+  <div class="foot"><div class="note"><b>Not here —</b> don't explain each view; topomap / PSD / timeline get their own slides.</div></div>
+</div>
+
+<!-- 16 -->
+<div class="card">
+  <div class="hd"><span class="num">16</span><span class="ttl">Component Cluster &amp; Mapper Graph</span><span class="time">~12:15</span></div>
+  <div class="body">
+    <div class="open">▶ "And a study-wide overview across all participants."</div>
+    <ul class="pts">
+      <li>Both project <span class="kw">every component from every participant</span> into one shared 2D space (UMAP on MiniRocket descriptors) — similar components sit close.</li>
+      <li><span class="kw">Cluster:</span> one dot per component, coloured by label (or by confidence).</li>
+      <li><span class="kw">Mapper:</span> nearby components grouped into pie-chart nodes (sized by count) + edges — structure without overplotting.</li>
+      <li>Best use = <span class="kw">outlier detection</span>: a dot whose colour differs from its cluster flags a likely misclassification → overview first, drill down.</li>
+    </ul>
+  </div>
+  <div class="foot"><div class="note"><b>Not here —</b> the actual caught case is the evaluation; don't over-claim.</div></div>
+</div>
+
+<!-- 17 -->
+<div class="card">
+  <div class="hd"><span class="num">17</span><span class="ttl">Topomap</span><span class="time">~12:45</span></div>
+  <div class="body">
+    <div class="open">▶ "First detail view — topography, the expert's first criterion."</div>
+    <ul class="pts">
+      <li>How strongly each sensor contributes + its polarity, from the ICA mixing matrix (µV); interpolated; blue → white → red.</li>
+      <li>The patterns classify: <span class="kw">dipolar = brain · frontal = ocular · peripheral patch = muscle · single electrode = bad channel</span>.</li>
+      <li>Hover = electrode name + amplitude; re-computes for a selected time range.</li>
+    </ul>
+  </div>
+  <div class="foot"><div class="note"><b>Not here —</b> don't re-explain the inspector.</div></div>
+</div>
+
+<!-- 18 -->
+<div class="card">
+  <div class="hd"><span class="num">18</span><span class="ttl">Power Spectral Density</span><span class="time">~13:15</span></div>
+  <div class="body">
+    <div class="open">▶ "Second detail view — the spectrum, the other primary criterion."</div>
+    <ul class="pts">
+      <li>Power across frequency, the five EEG bands shaded as background.</li>
+      <li>The shape names the source: <span class="kw">falling 1/f (often an alpha peak) = brain · flat/rising = muscle · delta/theta = ocular</span>.</li>
+      <li>Updates to whatever time range you select on the timeline.</li>
+    </ul>
+  </div>
+</div>
+
+<!-- 19 -->
+<div class="card">
+  <div class="hd"><span class="num">19</span><span class="ttl">Timeline</span><span class="time">~13:45</span></div>
+  <div class="body">
+    <div class="open">▶ "Third detail view — the timeline, used to confirm."</div>
+    <ul class="pts">
+      <li>The component's signal over the whole recording; scroll = time zoom, drag = pan, y-axis = amplitude.</li>
+      <li><span class="kw">Right-click-drag selects a range</span> → drives the topomap + PSD to that segment.</li>
+      <li>Three overlays: <span class="kw">EOG markers</span> (blink events; if spikes align → ocular), <span class="kw">trial markers</span> (is the artefact even inside a trial?), <span class="kw">PSD clusters</span>.</li>
+      <li>Role is confirmatory — eye artefacts = the classic large, slow deflections.</li>
+    </ul>
+  </div>
+  <div class="foot"><div class="note"><b>Not here —</b> the PSD-cluster detail (next slide).</div></div>
+</div>
+
+<!-- 20 -->
+<div class="card">
+  <div class="hd"><span class="num">20</span><span class="ttl">PSD Clustering</span><span class="time">~14:15</span></div>
+  <div class="body">
+    <div class="open">▶ "One overlay is worth a closer look — PSD clustering."</div>
+    <ul class="pts">
+      <li><span class="kw">K-means on the spectra of overlapping time windows</span> across the participant's components → colour-codes the timeline by spectral cluster.</li>
+      <li>Configurable cluster count, window size, step; similar spectral profiles get the same colour.</li>
+      <li>Payoff: <span class="kw">see at a glance where a component's frequency character changes</span>; hover a segment for the cluster's mean spectrum.</li>
+    </ul>
+  </div>
+</div>
+
+<!-- 21 -->
+<div class="card">
+  <div class="hd"><span class="num">21</span><span class="ttl">Evaluation</span><span class="time">~15:15</span></div>
+  <div class="body">
+    <div class="open">▶ "I evaluated ICARUS with two domain experts on their own EEG data."</div>
+    <ul class="pts">
+      <li><span class="kw">Think-aloud</span> + semi-structured interview, on <span class="kw">real BCI recordings</span> from their lab — the data and task they do day to day.</li>
+      <li><span class="kw">Five hands-on tasks</span>: recommendations · artefact identification · band-power analysis · mapper exploration · view comparison.</li>
+      <li>Consistent <span class="kw">decision sequence</span> (index → topomap → spectrum → timeline) matched the layout. Recommender trusted on ocular; muscle checked by hand.</li>
+      <li><span class="kw">Key moment:</span> the cross-participant overview let the expert <span class="kw">catch a mislabeled component</span> — imperfect classifier + expert inspection corrects errors the model alone would miss.</li>
+    </ul>
+    <p class="verb"><b class="tag">CLOSE (no slide):</b> "So the value is the integration — the recommender handles the clear cases, the expert keeps control of the rest. Thank you, I'm happy to take your questions." (PAUSE before "Thank you".)</p>
+  </div>
+  <div class="foot"><div class="note"><b>Not here —</b> don't volunteer limitations; keep them for Q&amp;A.</div></div>
+</div>
+
+<!-- BACKUP -->
+<div class="card dense">
+  <div class="hd"><span class="num">B</span><span class="ttl">Backups (Q&amp;A only)</span></div>
+  <div class="body">
+    <ul class="pts">
+      <li><span class="kw">Recommender Pipeline</span> — each component's time series → MiniRocket (9,996 feats) + 16 unmixing-matrix weights → Random Forest → keep-probability → tiers; ~75% test on 480 components / 30 participants. Lead with retrainability; don't volunteer "second-best model"; ICLabel → answer verbally.</li>
+      <li><span class="kw">Classification Experiments</span> — the nine-experiment table; MiniRocket chosen for speed (Matrix Profile 79% vs 75% but needs a self-join).</li>
+      <li><span class="kw">Data Flow</span> — decisions export as YAML, re-import into MNE (<code>ica.exclude</code> → <code>ica.apply()</code>), metadata preserved; labels can retrain.</li>
+    </ul>
+  </div>
+  <div class="foot"><div class="note"><b>Q&amp;A —</b> listen → rephrase → pause → answer briefly. Press <b>O</b> for the overview to jump to a backup.</div></div>
+</div>
+
+</body>
+</html>
