@@ -179,8 +179,9 @@ the body ones overlap the brain and have to be separated - thats ica
         <section>
             <h3>Independent Component Analysis</h3>
             <img src="./media/thesis/ica_toy_example.png" class="fig-split" alt="ICA cocktail-party decomposition"/>
-            <div class="text-[34px] mt-6 text-center">
-                <span class="font-mono bg-purple-100 px-5 py-2 rounded">X = A·S &nbsp;&nbsp;→&nbsp;&nbsp; Ŝ = W·X</span>
+            <div class="flex flex-col items-center mt-6">
+                <span class="font-mono bg-purple-100 px-5 py-2 rounded text-[34px]">X = A·S &nbsp;&nbsp;→&nbsp;&nbsp; Ŝ = W·X</span>
+                <span class="font-mono text-gray-500 text-[22px] mt-2">W ≈ A⁻¹</span>
             </div>
             <aside class="notes">
 ica separates the mixed signal into independent sources<br/>
@@ -189,7 +190,8 @@ think of the cocktail party problem: you are in a room where many people talk at
 ica is what pulls that mix back apart into the individual voices<br/>
 <br/>
 here its the same: the electrodes pick up brain activity, blinks and muscle all mixed together, and ica separates them into independent components<br/>
-we then remove the bad ones and use back-projection to rebuild the clean, noise-free signal
+we then remove the bad ones and use back-projection to rebuild the clean, noise-free signal<br/>
+back-projection just means: zero out the rejected components and multiply the kept sources back through the mixing matrix, giving the cleaned signal back in sensor space
             </aside>
         </section>
 
@@ -334,6 +336,14 @@ tier 1: confident enough to just batch-apply<br/>
 tier 2: a quick review<br/>
 tier 3: the uncertain middle, you inspect by hand<br/>
 <br/>
+how the model actually works: each component has two sides - a time series and a scalp pattern<br/>
+the time series goes through minirocket, a fast convolutional feature extractor (not a neural net or transformer) - it runs ~10000 fixed random kernels over the signal and turns it into a feature vector<br/>
+the scalp pattern adds 16 spatial weights from the unmixing matrix<br/>
+both go into a random forest, and the share of trees voting keep is the keep-probability<br/>
+<br/>
+i tried a range of pipelines before this - from matrix profile to different rocket variants, with different classifiers<br/>
+matrix profile plus topography scored highest but was slow; minirocket plus topography in a random forest gave nearly the same accuracy much faster, so thats what i deployed<br/>
+<br/>
 muscle is the hard one, so it gets its own badge on the side<br/>
 and important: its only an indicator, it never decides for you - the expert confirms everything
             </aside>
@@ -377,8 +387,9 @@ lets look at each part individually:
             <aside class="notes">
 and a view across all participants<br/>
 <br/>
-every component from every participant in one 2d space, arranged by similarity (cosine)<br/>
-the cluster shows one dot per component; the mapper groups nearby ones into nodes<br/>
+every component from every participant in one 2d space, arranged by similarity<br/>
+how its built: we take the minirocket features of each component, keep the most informative ones, and project them down to 2d with umap using cosine distance - so components with similar time courses land near each other<br/>
+the cluster shows one dot per component; the mapper then runs dbscan on those 2d points and groups nearby ones into nodes<br/>
 <br/>
 the useful part is spotting outliers: a dot in the wrong colour could be a misclassification, worth a closer look<br/>
 <br/>
@@ -391,8 +402,20 @@ switch to mapper: a zoomed-out overview of the clusters, each node a pie chart o
             <h3>Topomap</h3>
             <img src="./media/thesis/crop_topomap.png" class="fig" style="max-height:640px;" alt="Topomap view"/>
             <aside class="notes">
-the topomap: how strongly each sensor contributes, and the polarity<br/>
-the pattern tells you the source: dipolar is brain, frontal is eye, a peripheral patch is muscle, a single electrode is a bad channel<br/>
+the topomap: how strongly this one component projects onto each electrode, and with what polarity - blue negative, red positive<br/>
+<br/>
+how its generated: its the components column of the mixing matrix - one weight per electrode, in microvolts<br/>
+the electrodes sit at their 10-10 positions and the values between them are interpolated into a continuous map<br/>
+colours are normalised across all components so they stay comparable, and hovering an electrode shows its exact value<br/>
+select a time range on the timeline and it shows the mean pattern over just that segment<br/>
+<br/>
+the spatial pattern is one of the main cues for the source type:<br/>
+brain is a smooth dipolar pattern, one positive and one negative region on opposite sides<br/>
+ocular sits over the frontal electrodes<br/>
+muscle is an isolated patch near the edge<br/>
+a single hot electrode is a bad channel<br/>
+<br/>
+this is usually the experts first thing to look at
             </aside>
         </section>
 
@@ -401,9 +424,18 @@ the pattern tells you the source: dipolar is brain, frontal is eye, a peripheral
             <h3>Power Spectral Density</h3>
             <img src="./media/thesis/crop_psd.png" class="fig" style="max-height:640px;" alt="Power spectral density view"/>
             <aside class="notes">
-second, the psd<br/>
+second, the psd: how the components power is spread across frequencies<br/>
 <br/>
-the shape tells you a lot about the component: whether its an artefact or brain activity
+how its generated: we take the components time course and estimate its spectrum with welchs method - split the signal into windows, fft each one, and average them<br/>
+the visible range follows the preprocessing, here up to about 70 hz, and the five bands are shaded: delta, theta, alpha, beta, gamma<br/>
+like the topomap it updates if you select a time range<br/>
+<br/>
+the shape is the second main cue, together with the topomap:<br/>
+brain falls off as frequency rises - the 1/f shape<br/>
+ocular has its power down in delta and theta<br/>
+muscle is flat or even rising at the high end<br/>
+<br/>
+so topomap tells you where on the scalp, psd tells you in which frequencies - together they pin down the source
             </aside>
         </section>
 
@@ -413,10 +445,12 @@ the shape tells you a lot about the component: whether its an artefact or brain 
             <img src="./media/thesis/crop_timeline.png" class="fig" style="max-height:520px;max-width:100%;" alt="Timeline view"/>
             <p class="text-[28px] mt-5 text-center">Overlays: EOG markers · trial markers · PSD clusters</p>
             <aside class="notes">
-third, the timeline - the signal over the whole recording<br/>
+third, the timeline: the components activation over the whole recording - the source signal ica recovered<br/>
 <br/>
-mostly used to confirm, and to select a time range that then updates the topomap and spectrum<br/>
-it also has three overlays: eog markers, trial markers, and psd clusters
+its mainly used to confirm, and to brush: right-click-drag selects a time range, and the topomap and psd then update to just that segment - so you can compare a clean stretch against an artefact-heavy one<br/>
+arrow keys step through components and participants for a fast linear review<br/>
+<br/>
+three overlays can be turned on: eog markers for detected eye movements, trial markers for the experiment periods, and the psd-cluster strip - which is the next slide
             </aside>
         </section>
 
@@ -426,10 +460,13 @@ it also has three overlays: eog markers, trial markers, and psd clusters
             <img src="./media/thesis/all_clusters.png" class="fig" style="max-height:520px;max-width:100%;" alt="All Clusters: each cluster's mean power spectrum"/>
             <p class="text-[26px] mt-5 text-center">K-means on windowed spectra colour-codes the timeline where a component's frequency profile changes</p>
             <aside class="notes">
-quick look at that last overlay, psd clustering<br/>
+the last overlay, psd clustering<br/>
 <br/>
-it clusters the psd of short time windows and colours the timeline by it<br/>
-so you can see at a glance where a components frequency profile changes over time
+how its generated: we cut every component of the participant into overlapping time windows, take the power spectrum of each window, and run k-means on those spectra<br/>
+each window gets a cluster colour, shown as the strip under the timeline - you can set the number of clusters and the window and step size<br/>
+hovering a segment shows that clusters mean spectrum<br/>
+<br/>
+so at a glance you see where a components frequency profile changes over time
             </aside>
         </section>
 
