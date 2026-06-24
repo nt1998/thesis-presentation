@@ -77,7 +77,7 @@ Good Morning!<br/>
 Thanks for attending my masters defense on ICARUS - the ICA Component Artefact Review Utility System<br/>
 ICARUS is the result of a design study on visual analytics for eeg artefact removal<br/>
 <br/>
-First i want to say thanks to Julian and Tobias for supervizing the thesis<br/>
+First i want to say thanks to Julian and Tobias for supervising the thesis<br/>
 Special thanks to Selina and Michael for providing the domain knowledge and assisting throughout the whole process
             </aside>
         </section>
@@ -92,10 +92,8 @@ Special thanks to Selina and Michael for providing the domain knowledge and assi
             <aside class="notes">
 So what is a design study?<br/>
 problem driven visualization research: collaborate with real experts, solve real problem<br/>
-build a tool to solve it<br/>
-<br/>
 nine stages, three phases<br/>
-1. Precondition: learn about the problem, decide if there even is a need for a new tool and if it is worht further investigating<br/>
+1. Precondition: learn about the problem, decide if there even is a need for a new tool and if it is worth further investigating<br/>
 2. Core: discover methods, design and implement solution<br/>
 3. Analysis: validate the solution and gather feedback
             </aside>
@@ -190,8 +188,8 @@ ica separates the mixed signal into independent sources<br/>
 think of the cocktail party problem: you are in a room where many people talk at once, and what you hear is all their voices mixed together<br/>
 ica is what pulls that mix back apart into the individual voices<br/>
 <br/>
-here its the same: the electrodes pick up brain activity, blinks and muscle all mixed together, and ica separates them into independent components. we then remove the "bad" ones and use back projection to rebuild the clean noice free version
-
+here its the same: the electrodes pick up brain activity, blinks and muscle all mixed together, and ica separates them into independent components<br/>
+we then remove the bad ones and use back-projection to rebuild the clean, noise-free signal
             </aside>
         </section>
 
@@ -211,7 +209,7 @@ the rejected ones get removed and the clean signal is rebuilt (red before, black
 and this is irreversible: reject a brain component and you lose real signal, keep an artefact and you keep noise<br/>
 thats why we keep the human in control<br/>
 <br/>
-and its the bottleneck: alot of participants, ~16 components each
+and its the bottleneck: a lot of participants, ~16 components each
             </aside>
         </section>
 
@@ -365,9 +363,9 @@ and you click a component to open it
 clicking a component opens the inspector - the heart of the tool<br/>
 <br/>
 all the views on one screen: topomap, spectrum, timeline<br/>
-everything is linked updates together<br/>
-mouse and keyboard controls
-
+everything is linked - switch component and all views update together<br/>
+controlled by mouse and keyboard<br/>
+<br/>
 lets look at each part individually:
             </aside>
         </section>
@@ -382,9 +380,9 @@ and a view across all participants<br/>
 every component from every participant in one 2d space, arranged by similarity (cosine)<br/>
 the cluster shows one dot per component; the mapper groups nearby ones into nodes<br/>
 <br/>
-the useful part is spotting outliers: a dot in the wrong colour could possibly be a misclassification -> further inspection<br/>
-
-swtich to mapper: zoomed out overview of the clusters with a pie chart or coloring derived from the components it contains
+the useful part is spotting outliers: a dot in the wrong colour could be a misclassification, worth a closer look<br/>
+<br/>
+switch to mapper: a zoomed-out overview of the clusters, each node a pie chart or coloured by the components it contains
             </aside>
         </section>
 
@@ -405,7 +403,7 @@ the pattern tells you the source: dipolar is brain, frontal is eye, a peripheral
             <aside class="notes">
 second, the psd<br/>
 <br/>
-shape can tell alot about the component, if its an artefact or if its brain activity.
+the shape tells you a lot about the component: whether its an artefact or brain activity
             </aside>
         </section>
 
